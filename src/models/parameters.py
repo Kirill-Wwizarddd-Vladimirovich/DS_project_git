@@ -14,7 +14,7 @@ import pandas as pd
 
 model_params = {
     'parameters_RFR' : {'max_depth' : list(range(2, 10, 2)),
-                    'n_estimators': list(range(50, 500, 50)),
+                    'n_estimators': list(range(50, 200, 50)),
                     'criterion' : ['mae'],
                     },
                     
@@ -33,7 +33,8 @@ lgbm = lgb.LGBMRegressor(random_state = 12345)
 ctb = CatBoostRegressor(random_state = 12345, 
                          iterations = 1000, 
                          loss_function = 'MAE')
-model_list = [rfr, lgbm, ctb]
+model_list = [rfr, lgbm
+            ,ctb]
 
 models_dict = dict(zip(model_params.keys(), model_list))
 

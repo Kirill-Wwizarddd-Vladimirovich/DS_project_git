@@ -16,6 +16,15 @@ from .parameters import *
 
 
 def model_learning(dataframe: pd.DataFrame, target_ft: str) -> pd.DataFrame:
+    """Function that learn models
+    Args:
+        dataframe (pd.DataFrame): final dataframe
+        target_f (str): target feature
+
+
+    Returns:
+        dataframe with model name and its 'mae' results
+    """
     target = dataframe[target_ft]
     features = dataframe.drop(target_ft, axis=1)
     features_train, features_test, target_train, target_test = train_test_split(
@@ -35,14 +44,11 @@ def gridsearch_model(dataframe: pd.DataFrame, target_ft: str) -> pd.DataFrame:
     """Function where model's optimal hyperparameters are found with GridSearch
 
     Args:
-        model (Union[RegressorMixin, CatBoostRegressor]): any scikit-learn
-            regression model or catboost regressor that will be used for GridSearch
-        X_tr (pd.DataFrame): train X-data that will be used for model fitting
-        y_tr (pd.Series): train y-data that will be used for model fitting
-        parameters (dict): pre-set hyperparameters to choose from
+        dataframe (pd.DataFrame): final dataframe
+        target_f (str): target feature
 
     Returns:
-        dict: dict of best hyperparameters found via GridSearch
+         dataframe with model name and its 'mae' results after gridsearch procedure
     """
     target = dataframe[target_ft]
     features = dataframe.drop(target_ft, axis=1)
@@ -68,7 +74,11 @@ def gridsearch_model(dataframe: pd.DataFrame, target_ft: str) -> pd.DataFrame:
         model_mae = mean_absolute_error(target_test, preds)
         results.append(model_mae)
         best_params.append(gs.best_params_)
-        model_df = pd.DataFrame({'Model': [type(model).__name__ for model in model_list], 'Best parameters' : best_params, 'Mae_results': results}) 
+        model_df = pd.DataFrame({
+                                'Model': [type(model).__name__ for model in model_list], 
+                                #'Best parameters' : best_params, 
+                                'Mae_results': results
+                                }) 
 
 
     return model_df
