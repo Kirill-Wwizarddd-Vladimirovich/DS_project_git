@@ -11,10 +11,10 @@ def readcsvs(datalist: list) -> list:
     Returns:
         list: resulting list
     """
-    filelist = []
-    for file in datalist:
-        data = pd.read_csv(file)
-        filelist.append(data)
+    filelist = [pd.read_csv(file) for file in datalist]
+    #for file in datalist:
+    #    data = pd.read_csv(file)
+    #    filelist.append(data)
     return filelist
 
 
@@ -45,7 +45,8 @@ def dfprep(dataframe: pd.DataFrame, argtosum: str) -> pd.DataFrame:
     Returns:
         Dataframe: resulting dataframe 
     """
-    df_new = dataframe.drop(columns=dataframe.columns[2:5], axis = 1).groupby([argtosum]).sum().reset_index(drop=False).drop([0])
+    df_new = dataframe.drop(columns=dataframe.columns[2:5], axis = 1).groupby([argtosum]).sum().reset_index(drop=False)
+    
     return df_new
 # В рамках каждого скрипта нужно ли по-новой называть переменные - df_new и final_df
 

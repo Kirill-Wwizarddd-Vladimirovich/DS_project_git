@@ -51,7 +51,7 @@ def gridsearch_model(dataframe: pd.DataFrame, target_ft: str) -> pd.DataFrame:
          dataframe with model name and its 'mae' results after gridsearch procedure
     """
     target = dataframe[target_ft]
-    features = dataframe.drop(target_ft, axis=1)
+    features = dataframe.drop(['key', target_ft], axis=1)
     features_train, features_test, target_train, target_test = train_test_split(
     features, target, test_size=0.25, random_state=12345)
     results = []
@@ -74,11 +74,9 @@ def gridsearch_model(dataframe: pd.DataFrame, target_ft: str) -> pd.DataFrame:
         model_mae = mean_absolute_error(target_test, preds)
         results.append(model_mae)
         best_params.append(gs.best_params_)
-        model_df = pd.DataFrame({
-                                'Model': [type(model).__name__ for model in model_list], 
-                                #'Best parameters' : best_params, 
-                                'Mae_results': results
+        #model_name = pd.DataFrame({'Model': [type(model).__name__ for model in model_list]})
+        model_mae = pd.DataFrame({
+                                'Mae_results_CV': results
                                 }) 
-
-
-    return model_df
+        
+    return model_mae
